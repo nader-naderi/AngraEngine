@@ -12,7 +12,7 @@ namespace AngraEngine
             sprite = new SpriteRenderer(texture);
             Rigidbody rigidbody = new Rigidbody();
             AddComponent(rigidbody, new AudioPlayer(), sprite, 
-                new Collider(sprite.Size));
+                new Collider(Transform.Scale));
 
             PhysicsManager.AddRigidBody(rigidbody);
         }

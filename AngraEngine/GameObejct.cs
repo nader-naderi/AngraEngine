@@ -14,18 +14,18 @@ namespace AngraEngine
         public string Tag { get; protected set; } = "untagged";
 
         private List<Component> components = new List<Component>();
-        private Transform transform = new Transform(); // Add a Transform component
+        public Transform Transform { get; private set; } = new Transform(); // Add a Transform component
 
         public bool IsCollided { get; set; } = false;
 
         public GameObejct()
         {
-            transform = new Transform();
-            AddComponent(transform);
+            Transform = new Transform();
+            AddComponent(Transform);
         }
 
-        public float Rotation { get => transform.Rotation; set => transform.Rotation = value; } // Use the Transform component's Rotation property
-        public Vector2f Position { get => transform.Position; set => transform.Position = value; } // Use the Transform component's Position property
+        public float Rotation { get => Transform.Rotation; set => Transform.Rotation = value; } // Use the Transform component's Rotation property
+        public Vector2f Position { get => Transform.Position; set => Transform.Position = value; } // Use the Transform component's Position property
         //public virtual Vector2f Size => new Vector2f(sprite.TextureRect.Width, sprite.TextureRect.Height);
         //public virtual FloatRect GlobalBounds => sprite.GetGlobalBounds();
         public virtual Vector2f Size => new Vector2f(1, 1);
@@ -36,7 +36,8 @@ namespace AngraEngine
         /// </summary>
         public virtual void Awake()
         {
-
+            foreach (Component component in components)
+                component.Awake();
         }
 
         public virtual void Dispose()
@@ -55,7 +56,8 @@ namespace AngraEngine
         /// </summary>
         public virtual void Start()
         {
-
+            foreach (Component component in components)
+                component.Start();
         }
 
         /// <summary>

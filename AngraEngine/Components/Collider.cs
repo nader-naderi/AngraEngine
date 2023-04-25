@@ -1,23 +1,28 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
+using System.Drawing;
+
 namespace AngraEngine
 {
     public class Collider : Component
     {
-        public FloatRect Bounds => new FloatRect(gameObject.Position.X, gameObject.Position.Y, size.X, size.Y);
+        public FloatRect Bounds { get; set; } = new FloatRect(0, 0, 1, 1);
 
-        private Vector2f size;
+        private Vector2f Size { get; set; } = new Vector2f(1, 1);
         private bool isTrigger;
 
         public Collider(Vector2f size, bool isTrigger = false)
         {
-            this.size = size;
+            this.Size = size;
             this.isTrigger = isTrigger;
         }
 
         public override void Awake()
         {
+            Transform transform = gameObject.GetComponent<Transform>();
+            Size = transform.Scale;
+            this.Bounds = new FloatRect(transform.Position.X, transform.Position.Y, Size.X, Size.Y);
         }
 
         public override void Start()
@@ -26,6 +31,10 @@ namespace AngraEngine
 
         public override void Update(float deltaTime)
         {
+            // Update the size and bounds based on the transform
+            Transform transform = gameObject.GetComponent<Transform>();
+            Size = transform.Scale;
+            Bounds = new FloatRect(transform.Position.X, transform.Position.Y, Size.X, Size.Y);
         }
 
         public bool CheckCollision(Collider other)

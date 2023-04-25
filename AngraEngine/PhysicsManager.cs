@@ -25,26 +25,25 @@ namespace AngraEngine
         {
             for (int i = 0; i < rigidbodies.Count; i++)
             {
-                Rigidbody bodyA = rigidbodies[i];
-                Collider colliderA = bodyA.gameObject.GetComponent<Collider>();
+                Collider colliderA = rigidbodies[i].gameObject.GetComponent<Collider>();
 
                 for (int j = 0; j < rigidbodies.Count; j++)
                 {
-                    Rigidbody bodyB = rigidbodies[j];
-                    Collider colliderB = bodyB.gameObject.GetComponent<Collider>();
+                    Collider colliderB = rigidbodies[j].gameObject.GetComponent<Collider>();
 
                     if (colliderA == null || colliderB == null)
                         continue;
 
                     if (colliderA.CheckCollision(colliderB))
                     {
-                        bodyA.gameObject.OnCollisionEnter(bodyB.gameObject);
-                        bodyB.gameObject.OnCollisionEnter(bodyA.gameObject);
+                        colliderA.gameObject.OnCollisionEnter(colliderB.gameObject);
+                        colliderB.gameObject.OnCollisionEnter(colliderA.gameObject);
+                        Console.WriteLine("AA");
                     }
                     else
                     {
-                        bodyA.gameObject.OnCollisionExit(bodyB.gameObject);
-                        bodyB.gameObject.OnCollisionExit(bodyA.gameObject);
+                        colliderA.gameObject.OnCollisionExit(colliderB.gameObject);
+                        colliderB.gameObject.OnCollisionExit(colliderA.gameObject);
                     }
                 }
             }

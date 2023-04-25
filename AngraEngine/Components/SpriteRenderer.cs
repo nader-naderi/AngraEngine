@@ -7,6 +7,31 @@ namespace AngraEngine
     public class SpriteRenderer : Component, Drawable
     {
         private Sprite sprite;
+        private Transform? transform;
+        public Sprite Sprite { get => sprite; }
+
+        public virtual Texture Texture
+        {
+            get { return sprite.Texture; }
+            set { sprite.Texture = value; }
+        }
+
+        public virtual Color Color
+        {
+            get { return sprite.Color; }
+            set { sprite.Color = value; }
+        }
+
+        public virtual Vector2f Size
+        {
+            get { return sprite.Scale; }
+            set { sprite.Scale = value; }
+        }
+
+        public virtual FloatRect GlobalBounds
+        {
+            get { return sprite.GetGlobalBounds(); }
+        }
 
         public SpriteRenderer(Texture texture)
         {
@@ -20,6 +45,7 @@ namespace AngraEngine
 
         public override void Awake()
         {
+            transform = gameObject.GetComponent<Transform>();
             sprite.Position = gameObject.Position;
             sprite.Rotation = gameObject.Rotation;
             sprite.Scale = gameObject.Size;
@@ -27,9 +53,10 @@ namespace AngraEngine
 
         public override void Update(float deltaTime)
         {
-            sprite.Position = gameObject.Position;
-            sprite.Rotation = gameObject.Rotation;
-            sprite.Scale = gameObject.Size;
+            // Update the position, scale, and rotation based on the Transform component
+            sprite.Position = transform.Position;
+            sprite.Scale = transform.Scale;
+            sprite.Rotation = transform.Rotation;
         }
 
         public override void Draw(RenderTarget target, RenderStates states)
@@ -39,14 +66,13 @@ namespace AngraEngine
 
         public override void Start()
         {
-
+            // Set the initial position, scale, and rotation based on the Transform component
+            transform = gameObject.GetComponent<Transform>();
+            sprite.Position = transform.Position;
+            sprite.Scale = transform.Scale;
+            sprite.Rotation = transform.Rotation;
         }
 
-        public Vector2f Size => new Vector2f(sprite.TextureRect.Width, sprite.TextureRect.Height);
-
-        public FloatRect GlobalBounds => sprite.GetGlobalBounds();
-
-        public Sprite Sprite { get => sprite; }
 
         public override void Load()
         {

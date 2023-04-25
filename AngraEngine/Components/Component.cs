@@ -14,19 +14,10 @@ namespace AngraEngine
 
         public virtual void OnDestroy() { }
 
-        public virtual void Load()
-        {
+        public virtual void Load() { }
 
-        }
+        public virtual void Unload() { }
 
-        public virtual void Unload()
-        {
-
-        }
-
-        public virtual void Draw(RenderTarget target, RenderStates states)
-        {
-
-        }
+        public virtual void Draw(RenderTarget target, RenderStates states) { }
     }
 }
