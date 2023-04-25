@@ -11,7 +11,7 @@ namespace AngraEngine
 
         public Scene(string name)
         {
-            gameObjects.Add(new GameObejct(ResourceManager.BackGroundTexture));
+            gameObjects.Add(new Background(ResourceManager.BackGroundTexture));
 
             gameObjects.Add(new Player(ResourceManager.PlayerTexture));
             gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));

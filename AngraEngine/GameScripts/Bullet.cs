@@ -7,14 +7,14 @@ namespace AngraEngine
     {
         float bulletSpeed = 10;
         Rigidbody rb = new Rigidbody();
+        SpriteRenderer sprite;
 
-        public Bullet(Texture texture) : base(texture)
+        public Bullet(Texture texture) : base()
         {
             Tag = "Bullet";
-            
-            Console.WriteLine("BNB");
-
-            AddComponent(rb, new AudioPlayer(), new SpriteRenderer());
+            sprite = new SpriteRenderer(texture);
+            AddComponent(rb, new AudioPlayer(), sprite,
+                new Collider(sprite.Size));
         }
 
         public override void Awake()

@@ -1,5 +1,4 @@
-﻿using SFML.System;
-
+﻿
 namespace AngraEngine
 {
     public static class PhysicsManager
@@ -19,33 +18,33 @@ namespace AngraEngine
         public static void Update()
         {
             CollisionDetection();
-            ApplyPhysics(1f);
+            ApplyPhysics(TimeManager.deltaTime);
         }
 
         private static void CollisionDetection()
         {
             for (int i = 0; i < rigidbodies.Count; i++)
             {
+                Rigidbody bodyA = rigidbodies[i];
+                Collider colliderA = bodyA.gameObject.GetComponent<Collider>();
+
                 for (int j = 0; j < rigidbodies.Count; j++)
                 {
-                    GameObejct objectA = rigidbodies[i].gameObejct;
-                    GameObejct objectB = rigidbodies[j].gameObejct;
+                    Rigidbody bodyB = rigidbodies[j];
+                    Collider colliderB = bodyB.gameObject.GetComponent<Collider>();
 
-                    if ((objectA == null || objectB == null))
+                    if (colliderA == null || colliderB == null)
                         continue;
 
-                    if (objectA == objectB)
-                        continue;
-
-                    if (objectA.CheckCollision(objectB))
+                    if (colliderA.CheckCollision(colliderB))
                     {
-                        objectA.OnCollisionEnter(objectB);
-                        objectB.OnCollisionEnter(objectA);
+                        bodyA.gameObject.OnCollisionEnter(bodyB.gameObject);
+                        bodyB.gameObject.OnCollisionEnter(bodyA.gameObject);
                     }
                     else
                     {
-                        objectA.OnCollisionExit(objectB);
-                        objectB.OnCollisionExit(objectA);
+                        bodyA.gameObject.OnCollisionExit(bodyB.gameObject);
+                        bodyB.gameObject.OnCollisionExit(bodyA.gameObject);
                     }
                 }
             }
@@ -54,21 +53,7 @@ namespace AngraEngine
         public static void ApplyPhysics(float deltaTime)
         {
             foreach (Rigidbody body in rigidbodies)
-            {
-                // Apply Gravity
-                body.ApplyForce(new Vector2f(0, body.Gravity) * deltaTime);
-
-                // Apply Velocity
-                body.gameObejct.Position += body.Velocity * deltaTime;
-
-                // Apply Firiction
-                float firiction = body.Friction * deltaTime;
-
-                if (body.Velocity.X > 0)
-                    body.Velocity -= new Vector2f(Math.Min(body.Velocity.X, firiction), 0);
-                else if (body.Velocity.X < 0)
-                    body.Velocity += new Vector2f(Math.Min(-body.Velocity.X, firiction), 0);
-            }
+                body.Update(deltaTime);
         }
     }
 }

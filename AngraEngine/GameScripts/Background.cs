@@ -13,11 +13,12 @@ namespace AngraEngine
     public class Background : GameObejct
     {
         Window window;
-        public Background(Texture texture) : base(texture)
+        SpriteRenderer spriteRenderer;
+        public Background(Texture texture) : base()
         {
             Tag = "Background";
-
-            AddComponent(new SpriteRenderer());
+            spriteRenderer = new SpriteRenderer(texture);
+            AddComponent(spriteRenderer);
         }
 
         public override void Awake()
@@ -32,8 +33,8 @@ namespace AngraEngine
         {
             base.Start();
 
-            Sprite.Scale = new Vector2f((float)window.Size.X / Sprite.TextureRect.Width,
-                (float)window.Size.Y / Sprite.TextureRect.Height);
+            spriteRenderer.Sprite.Scale = new Vector2f((float)window.Size.X / spriteRenderer.Sprite.TextureRect.Width,
+                (float)window.Size.Y / spriteRenderer.Sprite.TextureRect.Height);
         }
 
         public override void Update()

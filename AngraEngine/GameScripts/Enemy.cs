@@ -5,12 +5,14 @@ namespace AngraEngine
 {
     public class Enemy : GameObejct
     {
-        public Enemy(Texture texture) : base(texture)
+        SpriteRenderer sprite;
+        public Enemy(Texture texture) : base()
         {
             Tag = "Enemy";
-
+            sprite = new SpriteRenderer(texture);
             Rigidbody rigidbody = new Rigidbody();
-            AddComponent(rigidbody, new AudioPlayer(), new SpriteRenderer());
+            AddComponent(rigidbody, new AudioPlayer(), sprite, 
+                new Collider(sprite.Size));
 
             PhysicsManager.AddRigidBody(rigidbody);
         }

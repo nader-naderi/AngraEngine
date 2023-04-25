@@ -9,13 +9,14 @@ namespace AngraEngine
     public class Player : GameObejct
     {
         float speed = 2;
-
-        public Player(Texture texture) : base(texture)
+        SpriteRenderer sprite;
+        public Player(Texture texture) : base()
         {
             Tag = "Player";
-
+            sprite = new SpriteRenderer(texture);
             Rigidbody rigidbody = new Rigidbody();
-            AddComponent(rigidbody, new AudioPlayer(), new SpriteRenderer());
+
+            AddComponent(rigidbody, new AudioPlayer(), sprite, new Collider(sprite.Size));
 
             PhysicsManager.AddRigidBody(rigidbody);
         }
@@ -29,7 +30,7 @@ namespace AngraEngine
         {
             base.Start();
             Position = new Vector2f(800 / 2, 600 / 2);
-            Sprite.Origin = new Vector2f(Sprite.TextureRect.Width / 2, Sprite.TextureRect.Height / 2);
+            sprite.Sprite.Origin = new Vector2f(sprite.Sprite.TextureRect.Width / 2, sprite.Sprite.TextureRect.Height / 2);
         }
 
         public override void Update()
@@ -68,7 +69,7 @@ namespace AngraEngine
         private void Fire()
         {
             Bullet newBullet = new Bullet(ResourceManager.BulletTexture);
-            newBullet.Sprite.Origin = new Vector2f(Sprite.TextureRect.Width / 2, Sprite.TextureRect.Height / 2);
+            newBullet.GetComponent<SpriteRenderer>().Sprite.Origin = new Vector2f(sprite.Sprite.TextureRect.Width / 2, sprite.Sprite.TextureRect.Height / 2);
             newBullet.Position = Position;
             newBullet.Rotation = Rotation;
 
@@ -81,7 +82,7 @@ namespace AngraEngine
             base.OnCollisionEnter(target);
             if (target.Tag == "Enemy")
             {
-                Sprite.Color = Color.Blue;
+                sprite.Sprite.Color = Color.Blue;
             }
         }
 
@@ -89,7 +90,7 @@ namespace AngraEngine
         {
             if (target.Tag == "Enemy")
             {
-                Sprite.Color = Color.White;
+                sprite.Sprite.Color = Color.White;
             }
         }
     }

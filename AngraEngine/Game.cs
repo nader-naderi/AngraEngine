@@ -1,26 +1,20 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 
-using System;
-
 namespace AngraEngine
 {
     public class Game
     {
-        // Component 
-        RenderWindow window;
         Font font;
 
-        public static Game Instance;
-        
-        /// <summary>
-        /// Engine Constructor
-        /// </summary>
+        public static Game Instance { get; set; }
+        public RenderWindow Window { get; private set; }
+
         public Game()
         {
-            window = new RenderWindow(new VideoMode(800, 600), "Our Great Game");
-            ResourceManager.Window = window;
-            window.SetVerticalSyncEnabled(true);
+            Window = new RenderWindow(new VideoMode(800, 600), "Our Great Game");
+            ResourceManager.Window = Window;
+            Window.SetVerticalSyncEnabled(true);
 
             ResourceManager.LoadAssets();
 
@@ -37,71 +31,38 @@ namespace AngraEngine
         public void Run()
         {
             // GameLoop
-            while (window.IsOpen)
+            while (Window.IsOpen)
             {
                 // Handle Events
-                window.DispatchEvents();
+                Window.DispatchEvents();
                 
                 // Update.
                 Update();
 
                 PhysicsManager.Update();
 
-                window.Clear();
+                Window.Clear();
 
                 // Draw
                 Draw();
 
-                window.Display();
-                //Console.Clear();
+                Window.Display();
             }
         }
 
         private void Draw()
         {
-            window.Draw(SceneManager.CurrentScene);
+            Window.Draw(SceneManager.CurrentScene);
         }
 
         private void Update()
         {
-            TimeManager.Update(window);
+            TimeManager.Update(Window);
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
-                window.Close();
+                Window.Close();
 
             SceneManager.CurrentScene.Update();
-        }
-    }
-
-    // Componenets: DataType
-        // Rigidbody
-        // AudioPlayer
-        // SpriteRenderer
-        // Collider
-
-    // Generics
-        
-
-    public abstract class Component
-    {
-        public GameObejct gameObejct { get; set; }
-        public abstract void Update(float deltaTime);
-    }
-
-
-
-    public class SpriteRenderer : Component
-    {
-        public override void Update(float deltaTime)
-        {
-        }
-    }
-
-    public class AudioPlayer : Component
-    {
-        public override void Update(float deltaTime)
-        {
-
         }
     }
 }

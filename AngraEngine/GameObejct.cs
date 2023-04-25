@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿
+using SFML.Graphics;
 using SFML.System;
 
 using System.Reflection;
@@ -8,25 +9,27 @@ namespace AngraEngine
 {
     public class GameObejct : Drawable, IDisposable, IInitializable, IUpdatable, ILoadable
     {
-        protected Sprite sprite;
         protected float rotation;
         protected Vector2f position;
         public string Tag { get; protected set; } = "untagged";
 
-        private List<Component> components = new List<Component>(); 
+        private List<Component> components = new List<Component>();
+        private Transform transform = new Transform(); // Add a Transform component
 
         public bool IsCollided { get; set; } = false;
 
-        public GameObejct(Texture texture)
+        public GameObejct()
         {
-            sprite = new Sprite(texture);
+            transform = new Transform();
+            AddComponent(transform);
         }
 
-        public Sprite Sprite { get => sprite; }
-        public float Rotation { get => rotation; set { rotation = value; sprite.Rotation = rotation; } }
-        public Vector2f Position { get => position; set { position = value; sprite.Position = position; } }
-        public Vector2f Size => new Vector2f(sprite.TextureRect.Width, sprite.TextureRect.Height);
-        public FloatRect GlobalBounds => sprite.GetGlobalBounds();
+        public float Rotation { get => transform.Rotation; set => transform.Rotation = value; } // Use the Transform component's Rotation property
+        public Vector2f Position { get => transform.Position; set => transform.Position = value; } // Use the Transform component's Position property
+        //public virtual Vector2f Size => new Vector2f(sprite.TextureRect.Width, sprite.TextureRect.Height);
+        //public virtual FloatRect GlobalBounds => sprite.GetGlobalBounds();
+        public virtual Vector2f Size => new Vector2f(1, 1);
+        public virtual FloatRect GlobalBounds => new FloatRect(1, 1, 1, 1);
 
         /// <summary>
         /// Executed one frame
@@ -36,14 +39,15 @@ namespace AngraEngine
 
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            sprite.Dispose();
+            //sprite.Dispose();
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public virtual void Draw(RenderTarget target, RenderStates states)
         {
-            target.Draw(sprite, states);
+            foreach (Component component in components)
+                component.Draw(target, states);
         }
 
         /// <summary>
@@ -73,7 +77,25 @@ namespace AngraEngine
 
         public virtual void OnCollisionEnter(GameObejct target)
         {
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            Rigidbody targetRigidbody = target.GetComponent<Rigidbody>();
 
+            if (rigidbody == null)
+                return;
+
+            if (targetRigidbody == null)
+                return;
+
+            float impactForce = 0.5f * rigidbody.Mass * targetRigidbody.Mass *
+                ((rigidbody.Velocity - targetRigidbody.Velocity).Length() / TimeManager.deltaTime);
+            // Calculate direction of impact
+            Vector2f direction = target.Position - Position;
+
+            // Normalize the direction vector to get a unit vector
+            direction.Normalize();
+
+            // Apply a force in the opposite direction of the impact
+            rigidbody.ApplyForce(-direction * impactForce);
         }
 
         public virtual void OnCollisionExit(GameObejct target)
@@ -81,14 +103,16 @@ namespace AngraEngine
 
         }
 
-        public void Load()
+        public virtual void Load()
         {
-            sprite.Texture.Smooth = true;
+            foreach (Component component in components)
+                component.Load();
         }
 
-        public void Unload()
+        public virtual void Unload()
         {
-            sprite.Texture.Smooth = false;
+            foreach (Component component in components)
+                component.Unload();
         }
 
         #region Component Related Methods
@@ -103,7 +127,7 @@ namespace AngraEngine
             for (int i = 0; i < newComponents.Length; i++)
             {
                 components.Add(newComponents[i]);
-                newComponents[i].gameObejct = this;
+                newComponents[i].gameObject = this;
             }
         }
 
