@@ -11,10 +11,15 @@ namespace AngraEngine
         public Vector2f Position { get; set; }
         public float Zoom { get; set; } = 1f;
         public View View { get; private set; }
+        
+        public static Camera main;
 
-        public Camera(Vector2f position)
+        public Camera()
         {
-            Position = position;
+            
+
+
+            Position = gameObject.GetComponent<Transform>().Position;
             View = new View(Position, new Vector2f(Game.Instance.Window.Size.X, Game.Instance.Window.Size.Y));
         }
 
@@ -38,7 +43,8 @@ namespace AngraEngine
 
         public override void Awake()
         {
-
+            if (gameObject.Tag == "Main Camera")
+                main = this;
         }
 
         public override void Start()

@@ -5,7 +5,7 @@ namespace AngraEngine
     public class Scene : IInitializable, IUpdatable, IDisposable, Drawable, ILoadable
     {
 
-        private List<GameObejct> gameObjects = new List<GameObejct>();
+        private List<GameObject> gameObjects = new List<GameObject>();
 
         private string name;
 
@@ -13,11 +13,15 @@ namespace AngraEngine
         {
             gameObjects.Add(new Background(ResourceManager.BackGroundTexture));
 
+            Player player = new Player(ResourceManager.PlayerTexture);
+
             gameObjects.Add(new Player(ResourceManager.PlayerTexture));
             gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));
+            gameObjects.Add(new CameraController(player.Transform));
 
-            foreach (GameObejct gameObejct in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
+                GameObject gameObejct = gameObjects[i];
                 gameObejct.Awake();
                 gameObejct.Start();
             }
@@ -42,44 +46,51 @@ namespace AngraEngine
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            foreach (GameObejct gameObejct in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObject gameObejct = gameObjects[i];
                 target.Draw(gameObejct);
+            }
         }
 
         
         public void Update()
         {
-            foreach (GameObejct gameObject in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObject gameObject = gameObjects[i];
                 gameObject.Update();
+            }
         }
 
-        public void AddGameObejct(GameObejct target)
+        public void AddGameObejct(GameObject target)
         {
             // Editor
 
             gameObjects.Add(target);
-
-            if (target.GetComponent<Rigidbody>() != null)
-            {
-                PhysicsManager.AddRigidBody(target.GetComponent<Rigidbody>());
-            }
         }
 
-        public void RemoveGameObejct(GameObejct target)
+        public void RemoveGameObejct(GameObject target)
         {
             gameObjects.Remove(target);
         }
 
         public void Load()
         {
-            foreach (GameObejct gameObject in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObject gameObject = gameObjects[i];
                 gameObject.Load();
+            }
         }
 
         public void Unload()
         {
-            foreach (GameObejct gameObject in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObject gameObject = gameObjects[i];
                 gameObject.Unload();
+            }
         }
     }
 }

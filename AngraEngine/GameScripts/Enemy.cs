@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace AngraEngine
 {
-    public class Enemy : GameObejct
+    public class Enemy : GameObject
     {
         SpriteRenderer sprite;
         public Enemy(Texture texture) : base()
@@ -11,10 +11,9 @@ namespace AngraEngine
             Tag = "Enemy";
             sprite = new SpriteRenderer(texture);
             Rigidbody rigidbody = new Rigidbody();
-            AddComponent(rigidbody, new AudioPlayer(), sprite, 
-                new Collider(Transform.Scale));
 
-            PhysicsManager.AddRigidBody(rigidbody);
+            AddComponent(rigidbody, new AudioPlayer(), sprite,
+                Collider = new Collider(Transform.Scale));
         }
 
         public override void Awake()

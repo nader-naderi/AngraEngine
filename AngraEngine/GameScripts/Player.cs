@@ -6,19 +6,19 @@ using System.Numerics;
 
 namespace AngraEngine
 {
-    public class Player : GameObejct
+    public class Player : GameObject
     {
         float speed = 2;
         SpriteRenderer sprite;
+
+        CameraController cameraController;
+
         public Player(Texture texture) : base()
         {
             Tag = "Player";
             sprite = new SpriteRenderer(texture);
             Rigidbody rigidbody = new Rigidbody();
-
-            AddComponent(rigidbody, new AudioPlayer(), sprite, new Collider(sprite.Size));
-
-            PhysicsManager.AddRigidBody(rigidbody);
+            AddComponent(rigidbody, new AudioPlayer(), sprite, Collider = new Collider(Transform.Scale));
         }
 
         public override void Awake()
@@ -77,7 +77,7 @@ namespace AngraEngine
             Console.WriteLine("Bullet = " + newBullet.Tag);
         }
 
-        public override void OnCollisionEnter(GameObejct target)
+        public override void OnCollisionEnter(GameObject target)
         {
             base.OnCollisionEnter(target);
             if (target.Tag == "Enemy")
@@ -86,7 +86,7 @@ namespace AngraEngine
             }
         }
 
-        public override void OnCollisionExit(GameObejct target)
+        public override void OnCollisionExit(GameObject target)
         {
             if (target.Tag == "Enemy")
             {

@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace AngraEngine
 {
-    public class Bullet : GameObejct
+    public class Bullet : GameObject
     {
         float bulletSpeed = 10;
         Rigidbody rb = new Rigidbody();
@@ -14,7 +14,7 @@ namespace AngraEngine
             Tag = "Bullet";
             sprite = new SpriteRenderer(texture);
             AddComponent(rb, new AudioPlayer(), sprite,
-                new Collider(sprite.Size));
+                 Collider = new Collider(Transform.Scale));
         }
 
         public override void Awake()

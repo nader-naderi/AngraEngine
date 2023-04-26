@@ -19,5 +19,7 @@ namespace AngraEngine
             }
             return v;
         }
+
+        public static Vector2f Zero => new Vector2f(0, 0);
     }
 }

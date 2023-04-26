@@ -53,6 +53,8 @@ namespace AngraEngine
 
         public override void Update(float deltaTime)
         {
+            transform ??= gameObject.GetComponent<Transform>();
+
             // Update the position, scale, and rotation based on the Transform component
             sprite.Position = transform.Position;
             sprite.Scale = transform.Scale;

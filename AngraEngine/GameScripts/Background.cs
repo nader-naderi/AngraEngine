@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AngraEngine
 {
-    public class Background : GameObejct
+    public class Background : GameObject
     {
         Window window;
         SpriteRenderer spriteRenderer;
