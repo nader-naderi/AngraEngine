@@ -15,15 +15,14 @@ namespace AngraEngine
 
             Player player = new Player(ResourceManager.PlayerTexture);
 
-            gameObjects.Add(new Player(ResourceManager.PlayerTexture));
+            gameObjects.Add(player);
             gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));
-            gameObjects.Add(new CameraController(player.Transform));
+            //gameObjects.Add(new CameraController(player.Transform));
 
             for (int i = 0; i < gameObjects.Count; i++)
             {
-                GameObject gameObejct = gameObjects[i];
-                gameObejct.Awake();
-                gameObejct.Start();
+                gameObjects[i].Awake();
+                gameObjects[i].Start();
             }
 
             this.name = name;

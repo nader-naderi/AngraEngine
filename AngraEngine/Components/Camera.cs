@@ -16,11 +16,6 @@ namespace AngraEngine
 
         public Camera()
         {
-            
-
-
-            Position = gameObject.GetComponent<Transform>().Position;
-            View = new View(Position, new Vector2f(Game.Instance.Window.Size.X, Game.Instance.Window.Size.Y));
         }
 
         public void SetPosition(Vector2f position)
@@ -31,6 +26,8 @@ namespace AngraEngine
 
         public override void Update(float deltaTime)
         {
+            View ??= new View(Position, new Vector2f(Game.Instance.Window.Size.X, Game.Instance.Window.Size.Y));
+
             // Update view position
             View.Center = Position;
 
@@ -45,6 +42,9 @@ namespace AngraEngine
         {
             if (gameObject.Tag == "Main Camera")
                 main = this;
+
+            View = new View(Position, new Vector2f(Game.Instance.Window.Size.X, Game.Instance.Window.Size.Y));
+            Position = gameObject.GetComponent<Transform>().Position;
         }
 
         public override void Start()
