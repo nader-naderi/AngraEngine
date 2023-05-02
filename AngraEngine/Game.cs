@@ -26,8 +26,8 @@ namespace AngraEngine
             font = new Font(Directory.GetCurrentDirectory() +
                 "/Assets/Textures/SpaceShooterRedux/Bonus/kenvector_future.ttf");
 
-            Scene scene = new Scene("New Scene");
-            SceneManager.AddScene(scene);
+            //Scene scene = new Scene("New Scene");
+            //SceneManager.AddScene(scene);
 
 
         }
@@ -38,7 +38,7 @@ namespace AngraEngine
             {
                 // Handle Events
                 Window.DispatchEvents();
-                
+
                 // Update.
                 Update();
 
@@ -55,7 +55,8 @@ namespace AngraEngine
 
         private void Draw()
         {
-            Window.Draw(SceneManager.CurrentScene);
+            if (SceneManager.CurrentScene != null)
+                Window.Draw(SceneManager.CurrentScene);
         }
 
         private void Update()
@@ -65,10 +66,11 @@ namespace AngraEngine
             if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
                 Window.Close();
 
-            SceneManager.CurrentScene.Update();
+            if (SceneManager.CurrentScene != null)
+                SceneManager.CurrentScene.Update();
         }
 
-        
+
     }
 
     //public class ObjectPool<T> where T : Component

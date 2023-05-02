@@ -9,14 +9,27 @@ namespace AngraEngine
 
         private string name;
 
+        public Scene(string name, Action<Scene> onCreationObjects)
+        {
+            this.name = name;
+
+            onCreationObjects?.Invoke(this);
+
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                gameObjects[i].Awake();
+                gameObjects[i].Start();
+            }
+        }
+
         public Scene(string name)
         {
-            gameObjects.Add(new Background(ResourceManager.BackGroundTexture));
+            //gameObjects.Add(new Background(ResourceManager.BackGroundTexture));
 
-            Player player = new Player(ResourceManager.PlayerTexture);
+            //Player player = new Player(ResourceManager.PlayerTexture);
 
-            gameObjects.Add(player);
-            gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));
+            //gameObjects.Add(player);
+            //gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));
             //gameObjects.Add(new CameraController(player.Transform));
 
             for (int i = 0; i < gameObjects.Count; i++)
